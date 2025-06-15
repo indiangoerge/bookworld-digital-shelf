@@ -6,6 +6,7 @@ import HeroSection from '@/components/HeroSection';
 import CategorySection from '@/components/CategorySection';
 import FilterChips from '@/components/FilterChips';
 import TrendingSection from '@/components/TrendingSection';
+import TestimonialsSection from '@/components/TestimonialsSection';
 import BookGrid from '@/components/BookGrid';
 import Footer from '@/components/Footer';
 
@@ -18,6 +19,7 @@ const Index = () => {
       <CategorySection />
       <FilterChips />
       <TrendingSection />
+      <TestimonialsSection />
       <BookGrid />
       <Footer />
     </div>

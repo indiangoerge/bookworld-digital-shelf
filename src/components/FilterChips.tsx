@@ -3,19 +3,62 @@ import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { useAppContext } from '@/contexts/AppContext';
 
-const filterOptions = [
-  { id: 'new', label: 'New Arrivals', count: 24 },
-  { id: 'discount', label: 'Discount 40%+', count: 156 },
-  { id: 'fiction', label: 'Fiction', count: 456 },
-  { id: 'children', label: 'Children', count: 234 },
-  { id: 'non-fiction', label: 'Non-Fiction', count: 89 },
-  { id: 'bestseller', label: 'Bestsellers', count: 67 },
-  { id: 'biography', label: 'Biography', count: 45 },
-  { id: 'mystery', label: 'Mystery', count: 23 }
-];
-
 const FilterChips = () => {
-  const { activeFilter, setActiveFilter } = useAppContext();
+  const { activeFilter, setActiveFilter, allBooks } = useAppContext();
+
+  // Calculate real counts from the book data
+  const filterOptions = [
+    { 
+      id: 'new', 
+      label: 'New Arrivals', 
+      count: allBooks.filter(book => book.badge === 'New Arrival').length 
+    },
+    { 
+      id: 'discount', 
+      label: 'Discount 40%+', 
+      count: allBooks.filter(book => ((book.mrp - book.price) / book.mrp) >= 0.4).length 
+    },
+    { 
+      id: 'fiction', 
+      label: 'Fiction', 
+      count: allBooks.filter(book => book.category === 'fiction').length 
+    },
+    { 
+      id: 'children', 
+      label: 'Children', 
+      count: allBooks.filter(book => book.category === 'children').length 
+    },
+    { 
+      id: 'non-fiction', 
+      label: 'Non-Fiction', 
+      count: allBooks.filter(book => book.category === 'non-fiction').length 
+    },
+    { 
+      id: 'bestseller', 
+      label: 'Bestsellers', 
+      count: allBooks.filter(book => book.badge === 'Bestseller').length 
+    },
+    { 
+      id: 'biography', 
+      label: 'Biography', 
+      count: allBooks.filter(book => book.category === 'biography').length 
+    },
+    { 
+      id: 'mystery', 
+      label: 'Mystery', 
+      count: allBooks.filter(book => book.category === 'mystery').length 
+    },
+    { 
+      id: 'science', 
+      label: 'Science', 
+      count: allBooks.filter(book => book.category === 'science').length 
+    },
+    { 
+      id: 'romance', 
+      label: 'Romance', 
+      count: allBooks.filter(book => book.category === 'romance').length 
+    }
+  ];
 
   const handleFilterClick = (filterId: string) => {
     setActiveFilter(activeFilter === filterId ? null : filterId);
