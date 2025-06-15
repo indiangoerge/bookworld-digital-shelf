@@ -4,6 +4,7 @@ import { Search, Heart, Book, User, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppContext } from '@/contexts/AppContext';
 import { useToast } from '@/hooks/use-toast';
 
@@ -17,12 +18,14 @@ const Header = () => {
     setIsLoggedIn 
   } = useAppContext();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [language, setLanguage] = useState('en');
   const [currency, setCurrency] = useState('inr');
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
       toast({
         title: "Searching...",
         description: `Looking for "${searchQuery}"`,
@@ -53,10 +56,10 @@ const Header = () => {
     <header className="bg-white shadow-sm sticky top-0 z-50 border-b">
       <div className="container mx-auto px-4 h-20 flex items-center gap-6">
         {/* Logo */}
-        <div className="flex items-center gap-2 font-playfair font-bold text-xl text-bookworld-primary">
+        <Link to="/" className="flex items-center gap-2 font-playfair font-bold text-xl text-bookworld-primary">
           <Book className="h-6 w-6 text-bookworld-accent" />
           <span>Bookworld India</span>
-        </div>
+        </Link>
 
         {/* Search Bar */}
         <div className="flex-1 max-w-2xl mx-8">
@@ -94,35 +97,48 @@ const Header = () => {
             <option value="usd">USD</option>
           </select>
 
-          {/* Login/Signup */}
-          <Button 
-            variant="ghost" 
-            className="text-bookworld-primary hover:text-bookworld-accent flex items-center gap-2"
-            onClick={handleLogin}
-          >
-            <User className="h-4 w-4" />
-            {isLoggedIn ? 'Logout' : 'Login'}
-          </Button>
+          {/* Login/Profile */}
+          {isLoggedIn ? (
+            <Link to="/profile">
+              <Button variant="ghost" className="text-bookworld-primary hover:text-bookworld-accent flex items-center gap-2">
+                <User className="h-4 w-4" />
+                Profile
+              </Button>
+            </Link>
+          ) : (
+            <Button 
+              variant="ghost" 
+              className="text-bookworld-primary hover:text-bookworld-accent flex items-center gap-2"
+              onClick={handleLogin}
+            >
+              <User className="h-4 w-4" />
+              Login
+            </Button>
+          )}
 
           {/* Wishlist */}
-          <Button variant="ghost" className="relative text-bookworld-primary hover:text-bookworld-accent">
-            <Heart className="h-5 w-5" />
-            {wishlistCount > 0 && (
-              <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs bg-bookworld-accent">
-                {wishlistCount}
-              </Badge>
-            )}
-          </Button>
+          <Link to="/wishlist">
+            <Button variant="ghost" className="relative text-bookworld-primary hover:text-bookworld-accent">
+              <Heart className="h-5 w-5" />
+              {wishlistCount > 0 && (
+                <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs bg-bookworld-accent">
+                  {wishlistCount}
+                </Badge>
+              )}
+            </Button>
+          </Link>
 
           {/* Cart */}
-          <Button variant="ghost" className="relative text-bookworld-primary hover:text-bookworld-accent">
-            <ShoppingCart className="h-5 w-5" />
-            {cartCount > 0 && (
-              <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs bg-bookworld-accent">
-                {cartCount}
-              </Badge>
-            )}
-          </Button>
+          <Link to="/cart">
+            <Button variant="ghost" className="relative text-bookworld-primary hover:text-bookworld-accent">
+              <ShoppingCart className="h-5 w-5" />
+              {cartCount > 0 && (
+                <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs bg-bookworld-accent">
+                  {cartCount}
+                </Badge>
+              )}
+            </Button>
+          </Link>
         </div>
       </div>
     </header>

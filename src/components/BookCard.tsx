@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Heart, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Link } from 'react-router-dom';
 import { useAppContext } from '@/contexts/AppContext';
 import { useToast } from '@/hooks/use-toast';
 
@@ -50,13 +51,15 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="relative mb-4">
-        <div className="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden">
-          <img
-            src={book.cover}
-            alt={book.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-        </div>
+        <Link to={`/book/${book.id}`}>
+          <div className="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden">
+            <img
+              src={book.cover}
+              alt={book.title}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+        </Link>
         
         {/* Wishlist Button */}
         <button
@@ -84,9 +87,11 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
       </div>
 
       <div className="space-y-2">
-        <h3 className="font-inter font-semibold text-bookworld-primary line-clamp-2 group-hover:text-bookworld-accent transition-colors duration-300">
-          {book.title}
-        </h3>
+        <Link to={`/book/${book.id}`}>
+          <h3 className="font-inter font-semibold text-bookworld-primary line-clamp-2 group-hover:text-bookworld-accent transition-colors duration-300">
+            {book.title}
+          </h3>
+        </Link>
         <p className="text-sm text-gray-600 font-inter">by {book.author}</p>
         
         <div className="flex items-center gap-1 text-sm">
