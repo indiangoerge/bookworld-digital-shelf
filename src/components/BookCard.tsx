@@ -1,34 +1,38 @@
 
-import React, { useState } from 'react';
-import { Heart, ShoppingCart } from 'lucide-react';
+import React from 'react';
+import { Heart, ShoppingCart, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
 import { useAppContext } from '@/contexts/AppContext';
 import { useToast } from '@/hooks/use-toast';
 
-interface BookCardProps {
-  book: {
-    id: number;
-    title: string;
-    author: string;
-    price: number;
-    mrp: number;
-    rating: number;
-    cover: string;
-    badge?: string;
-  };
+interface Book {
+  id: number;
+  title: string;
+  author: string;
+  price: number;
+  mrp: number;
+  rating: number;
+  cover: string;
+  badge?: string;
+  category?: string;
+  publisher?: string;
 }
 
-const BookCard: React.FC<BookCardProps> = ({ book }) => {
+interface BookCardProps {
+  book: Book;
+}
+
+const BookCard = ({ book }: BookCardProps) => {
   const { addToCart, toggleWishlist, isInWishlist } = useAppContext();
   const { toast } = useToast();
-  const [isHovered, setIsHovered] = useState(false);
-
   const isWishlisted = isInWishlist(book.id);
   const discount = Math.round(((book.mrp - book.price) / book.mrp) * 100);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     addToCart(book);
     toast({
       title: "Added to cart!",
@@ -36,7 +40,9 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
     });
   };
 
-  const handleWishlistToggle = () => {
+  const handleWishlistToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     toggleWishlist(book.id);
     toast({
       title: isWishlisted ? "Removed from wishlist" : "Added to wishlist!",
@@ -45,11 +51,7 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
   };
 
   return (
-    <div 
-      className="bg-bookworld-card rounded-xl p-4 shadow-book hover:shadow-book-hover transition-all duration-300 hover:scale-105 group"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <div className="bg-white rounded-xl p-4 shadow-sm border group hover:shadow-md transition-all duration-300">
       <div className="relative mb-4">
         <Link to={`/book/${book.id}`}>
           <div className="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden">
@@ -61,42 +63,48 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
           </div>
         </Link>
         
-        {/* Wishlist Button */}
         <button
           onClick={handleWishlistToggle}
-          className={`absolute top-2 right-2 p-1.5 rounded-full transition-all duration-300 ${
-            isWishlisted ? 'bg-red-500 text-white' : 'bg-white/80 text-gray-600 hover:bg-white'
-          } hover:scale-110`}
+          className={`absolute top-2 right-2 p-1.5 rounded-full transition-colors ${
+            isWishlisted 
+              ? 'bg-red-500 text-white hover:bg-red-600' 
+              : 'bg-white/80 text-gray-600 hover:bg-white hover:text-red-500'
+          }`}
         >
           <Heart className={`h-4 w-4 ${isWishlisted ? 'fill-current' : ''}`} />
         </button>
-
-        {/* Badge */}
+        
         {book.badge && (
           <Badge className="absolute top-2 left-2 bg-bookworld-accent text-white text-xs">
             {book.badge}
           </Badge>
         )}
-
-        {/* Discount Badge */}
-        {discount > 0 && !book.badge && (
-          <Badge className="absolute top-2 left-2 bg-green-500 text-white text-xs">
+        
+        {discount > 0 && (
+          <div className="absolute bottom-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded">
             {discount}% OFF
-          </Badge>
+          </div>
         )}
       </div>
 
       <div className="space-y-2">
         <Link to={`/book/${book.id}`}>
-          <h3 className="font-inter font-semibold text-bookworld-primary line-clamp-2 group-hover:text-bookworld-accent transition-colors duration-300">
+          <h3 className="font-semibold text-bookworld-primary line-clamp-2 hover:text-bookworld-accent transition-colors">
             {book.title}
           </h3>
         </Link>
-        <p className="text-sm text-gray-600 font-inter">by {book.author}</p>
+        
+        <Link 
+          to={`/author/${book.author.replace(' ', '-').toLowerCase()}`}
+          className="text-sm text-gray-600 hover:text-bookworld-accent transition-colors"
+        >
+          by {book.author}
+        </Link>
         
         <div className="flex items-center gap-1 text-sm">
-          <span className="text-yellow-400">⭐</span>
+          <Star className="h-3 w-3 text-yellow-400 fill-current" />
           <span className="font-medium">{book.rating}</span>
+          <span className="text-gray-500">(234)</span>
         </div>
 
         <div className="flex items-center gap-2">
@@ -106,15 +114,13 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
           )}
         </div>
 
-        <div className={`transition-all duration-300 ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>
-          <Button 
-            onClick={handleAddToCart}
-            className="w-full bg-bookworld-accent hover:bg-orange-600 text-white font-semibold rounded-full flex items-center gap-2"
-          >
-            <ShoppingCart className="h-4 w-4" />
-            Add to Cart
-          </Button>
-        </div>
+        <Button 
+          onClick={handleAddToCart}
+          className="w-full bg-bookworld-accent hover:bg-orange-600 text-white font-semibold rounded-full flex items-center gap-2 mt-3"
+        >
+          <ShoppingCart className="h-4 w-4" />
+          Add to Cart
+        </Button>
       </div>
     </div>
   );
