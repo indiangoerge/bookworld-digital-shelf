@@ -10,9 +10,9 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
     watch: {
-      usePolling: false,
-      useFsEvents: false,
-      ignored: ['**/node_modules/**', '**/.git/**']
+      usePolling: true,
+      interval: 1000,
+      ignored: ['**/node_modules/**', '**/.git/**', '**/dist/**', '**/build/**']
     }
   },
   plugins: [
