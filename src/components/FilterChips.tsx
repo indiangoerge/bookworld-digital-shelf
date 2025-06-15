@@ -1,20 +1,25 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Badge } from '@/components/ui/badge';
+import { useAppContext } from '@/contexts/AppContext';
 
 const filterOptions = [
   { id: 'new', label: 'New Arrivals', count: 24 },
   { id: 'discount', label: 'Discount 40%+', count: 156 },
-  { id: 'hindi', label: 'Hindi', count: 89 },
+  { id: 'fiction', label: 'Fiction', count: 456 },
   { id: 'children', label: 'Children', count: 234 },
-  { id: 'recent', label: 'Recently Added', count: 45 },
+  { id: 'non-fiction', label: 'Non-Fiction', count: 89 },
   { id: 'bestseller', label: 'Bestsellers', count: 67 },
-  { id: 'preorder', label: 'Pre-orders', count: 23 },
-  { id: 'fiction', label: 'Fiction', count: 456 }
+  { id: 'biography', label: 'Biography', count: 45 },
+  { id: 'mystery', label: 'Mystery', count: 23 }
 ];
 
 const FilterChips = () => {
-  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const { activeFilter, setActiveFilter } = useAppContext();
+
+  const handleFilterClick = (filterId: string) => {
+    setActiveFilter(activeFilter === filterId ? null : filterId);
+  };
 
   return (
     <section className="py-8 bg-white border-b">
@@ -33,7 +38,7 @@ const FilterChips = () => {
                     ? 'bg-bookworld-accent hover:bg-orange-600 text-white'
                     : 'border-bookworld-accent text-bookworld-accent hover:bg-bookworld-accent hover:text-white'
                 }`}
-                onClick={() => setActiveFilter(activeFilter === filter.id ? null : filter.id)}
+                onClick={() => handleFilterClick(filter.id)}
               >
                 #{filter.label} ({filter.count})
               </Badge>
