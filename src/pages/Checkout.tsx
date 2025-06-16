@@ -88,12 +88,12 @@ const Checkout = () => {
   }
 
   const handlePlaceOrder = () => {
+    const orderId = `ORD${Date.now()}`;
     toast({
       title: "Order placed successfully!",
       description: "Thank you for your purchase. You will receive a confirmation email soon.",
     });
-    // Clear cart and redirect (you can implement this in context)
-    navigate('/');
+    navigate(`/order-confirmation?orderId=${orderId}`);
   };
 
   return (

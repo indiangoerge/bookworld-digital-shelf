@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Search, Heart, Book, User, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -41,11 +40,7 @@ const Header = () => {
         description: "You have been successfully logged out.",
       });
     } else {
-      setIsLoggedIn(true);
-      toast({
-        title: "Welcome back!",
-        description: "You have been successfully logged in.",
-      });
+      navigate('/login');
     }
   };
 
