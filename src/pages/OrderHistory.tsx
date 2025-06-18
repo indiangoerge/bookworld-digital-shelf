@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Package, Download, Eye, RotateCcw, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -11,7 +10,7 @@ import Footer from '@/components/Footer';
 const OrderHistory = () => {
   const { isLoggedIn } = useAppContext();
   const { toast } = useToast();
-  const [selectedOrder, setSelectedOrder] = useState<number | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<string | null>(null);
 
   const orders = [
     {
