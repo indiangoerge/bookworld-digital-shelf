@@ -1,0 +1,7 @@
+# Sample Excel file structure
+# Create an Excel file with the following columns:
+# title | author | genre | price | description | isbn | cover_image_url | stock
+#
+# Example rows:
+# Atomic Habits | James Clear | Self-help | 299 | A book about building good habits | 9781847941831 | https://example.com/image.jpg | 100
+# The Alchemist | Paulo Coelho | Fiction | 250 | A philosophical novel | 9780062315007 | https://example.com/image2.jpg | 50
